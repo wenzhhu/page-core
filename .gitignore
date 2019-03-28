@@ -1,0 +1,11 @@
+.checkstyle
+.classpath
+.project
+.settings
+target
+test-output
+dc.h2.db
+.idea
+*.iml
+allure-results
+build
