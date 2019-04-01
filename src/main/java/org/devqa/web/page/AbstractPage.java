@@ -6,40 +6,37 @@ import java.util.Objects;
 import java.util.Set;
 
 import org.devqa.web.page.action.Action;
-import org.devqa.web.page.action.ActionRequest;
 import org.devqa.web.page.assertion.Assertion;
 import org.devqa.web.page.assertion.PagePresentedAssertion;
 
 public abstract class AbstractPage implements Page {
     @FunctionalInterface
     public static interface ActionPerformer<T extends Action> {
-        public void perform(ActionRequest<T> actionRequest);
+        public void perform(T action);
     }
 
     @Override
-    public final Page performAction(ActionRequest actionRequest) {
-        Objects.requireNonNull(actionRequest, "action request must not be null");
+    public final Page performAction(Action action) {
+        Objects.requireNonNull(action, "action must not be null");
 
-        Action action = actionRequest.getAction();
-
-        ActionPerformer actionPerformer = actionPerformers.get(actionRequest.getAction());
+        ActionPerformer<Action> actionPerformer = actionPerformers.get(action);
 
         if (actionPerformer == null) {
             throw new UnsupportedActionException(action + "is not supported by Page " + this);
         } else {
-            actionPerformer.perform(actionRequest);
+            actionPerformer.perform(action);
         }
 
         return this;
     }
 
-    private final Map<Action, ActionPerformer> actionPerformers= new HashMap<>();
+    private final Map<Action, ActionPerformer<Action>> actionPerformers= new HashMap<>();
 
-    protected final void addSupportedAction(Action action, ActionPerformer performer) {
+    protected final <T extends Action> void addSupportedAction(T action, ActionPerformer<T> performer) {
         Objects.requireNonNull(action, "action must not be null");
         Objects.requireNonNull(performer, "action performer must not be null");
 
-        actionPerformers.put(action, performer);
+        actionPerformers.put((Action)action, (ActionPerformer<Action>)performer);
     }
 
     protected final Set<Action> getSupportedActions() {

@@ -3,7 +3,6 @@ package org.devqa.web.page;
 import javax.annotation.Nonnull;
 
 import org.devqa.web.page.action.Action;
-import org.devqa.web.page.action.ActionRequest;
 import org.devqa.web.page.assertion.Assertion;
 
 /**
@@ -39,7 +38,6 @@ public interface Page {
      *
      * @throws UnsupportedAssertionException if the assertion is not supported by this page
      * @throws NullPointerException if assertion is null
-     * @throws PageAssertionException if the assertion is false
      */
     Page makeAssertion(@Nonnull Assertion assertion);
 
@@ -61,7 +59,7 @@ public interface Page {
      * @throws UnsupportedActionException if the action is not supported by this page
      * @throws NullPointerException if action is null
      */
-    Page performAction(@Nonnull ActionRequest actionRequest);
+     Page performAction(@Nonnull Action action);
 
     /**
      * Assert the page is presented. In other words, it's the current page that is being displayed and manipulated.
@@ -71,8 +69,6 @@ public interface Page {
      * being presented. Not otherwise.
      *
      * @return this page itself to chain the call
-     *
-     * @throws PageAssertionException if the page is not presented
      */
     Page assertPresented();
 

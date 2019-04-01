@@ -11,7 +11,7 @@ public final class CompositePage extends AbstractPage {
     private final String pageName;
 
     private CompositePage(String pageName,
-            Map<Action, ActionPerformer> actionPerformers) {
+            Map<Action, ActionPerformer<Action>> actionPerformers) {
         super();
         this.pageName = pageName;
         actionPerformers.forEach((a, p) -> addSupportedAction(a, p));
@@ -30,15 +30,15 @@ public final class CompositePage extends AbstractPage {
             this.pageName = pageName;
         }
 
-        public Builder action(Action action, ActionPerformer actionPerformer) {
+        public <T extends Action> Builder action(T action, ActionPerformer<T> actionPerformer) {
             Objects.requireNonNull(action, "action must not be null");
             Objects.requireNonNull(actionPerformer, "action performer must not be null");
 
-            actionPerformers.put(action, actionPerformer);
+            actionPerformers.put((Action)action, (ActionPerformer)actionPerformer);
             return this;
         }
 
-        private final Map<Action, ActionPerformer> actionPerformers = new HashMap<>();
+        private final Map<Action, ActionPerformer<Action>> actionPerformers = new HashMap<>();
 
         public Page build() {
             return new CompositePage(pageName, actionPerformers);

@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.devqa.web.page.AbstractPage.ActionPerformer;
 import org.devqa.web.page.action.Action;
-import org.devqa.web.page.action.ActionRequest;
+import org.devqa.web.page.action.Click;
 import org.devqa.web.page.action.LogoutAction;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
@@ -16,18 +16,21 @@ public class CompositePageTest {
     private final CompositePage.Builder PAGE_BUILDER = new CompositePage.Builder("test");
     private final Page PAGE_SUPPORTING_NOTHING = new CompositePage.Builder("test").build();
 
-    private final Action CLICK_OK = click("OK");
-    private final ActionRequest CLICK_OK_REQUEST = click("OK");
-    private final ActionPerformer CLICK_OK_ACTION_PERFORMER = mock(ActionPerformer.class);
+    private final Click CLICK_OK = click("OK");
+
+    @SuppressWarnings("unchecked")
+    private final ActionPerformer<Click> CLICK_OK_ACTION_PERFORMER = mock(ActionPerformer.class);
+
     private final Page PAGE_SUPPORTING_CLICK_OK = new CompositePage.Builder("test")
             .action(CLICK_OK, CLICK_OK_ACTION_PERFORMER).build();
 
-    private final ActionRequest RUNTIME_ACTION_CLICK_OK = click("OK");
-    private final ActionRequest CLICK_CANCEL = click("CANCEL");
+    private final Click RUNTIME_ACTION_CLICK_OK = click("OK");
+    private final Action CLICK_CANCEL = click("CANCEL");
 
-    private final ActionRequest AGREE_TERM = agree("TERM");
+    private final Action AGREE_TERM = agree("TERM");
 
-    private final ActionPerformer NO_OP_PERFORMER = mock(ActionPerformer.class);
+    @SuppressWarnings("unchecked")
+    private final ActionPerformer<Action> NO_OP_PERFORMER = mock(ActionPerformer.class);
 
     @Test(expected = NullPointerException.class)
     public void nullActionThrowsNPEWhenPerformed() {
@@ -36,7 +39,7 @@ public class CompositePageTest {
 
     @Test(expected = UnsupportedActionException.class)
     public void unsupportedActionThrowsExceptionWhenPerformed() {
-        PAGE_SUPPORTING_NOTHING.performAction(CLICK_OK_REQUEST);
+        PAGE_SUPPORTING_NOTHING.performAction(CLICK_OK);
     }
 
     @Test(expected = NullPointerException.class)

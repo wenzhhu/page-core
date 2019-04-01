@@ -7,7 +7,8 @@ public final class ActionRequestFactory {
         return new EnterTextAction(target);
     }
 
-    public static ActionRequest<EnterTextAction> enterText(String target, String value) {
-        return new EnterTextActionRequest(enterText(target), value);
+    public static EnterTextAction enterText(String target, String value) {
+        return new EnterTextAction(target, value);
     }
+
 }
