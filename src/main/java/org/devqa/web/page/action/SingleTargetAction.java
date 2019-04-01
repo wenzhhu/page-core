@@ -1,14 +1,32 @@
 package org.devqa.web.page.action;
 
-public abstract class SingleTargetAction extends Action {
+public abstract class SingleTargetAction implements Action, ActionRequest {
     private final String target;
 
     protected SingleTargetAction(String target) {
         this.target = target;
     }
 
+    public static SingleTargetAction click(String target) {
+        return new Click(target);
+    }
+
+    public static SingleTargetAction agree(String target) {
+        return new Agree(target);
+    }
+
     @Override
-    public int hashCode() {
+    public final Action getAction() {
+        return this;
+    }
+
+    @Override
+    public final String toString() {
+        return getClass() + " [target=" + target + "]";
+    }
+
+    @Override
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((target == null) ? 0 : target.hashCode());
@@ -16,7 +34,7 @@ public abstract class SingleTargetAction extends Action {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public final boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
@@ -30,11 +48,6 @@ public abstract class SingleTargetAction extends Action {
         } else if (!target.equals(other.target))
             return false;
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return getClass() + "[target=" + target + "]";
     }
 
 }
