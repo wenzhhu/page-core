@@ -1,18 +1,12 @@
-package org.devqa.web.page.action;
+package org.devqa.web.page.action.singletarget;
+
+import org.devqa.web.page.action.Action;
 
 public abstract class SingleTargetAction implements Action {
     private final String target;
 
     protected SingleTargetAction(String target) {
         this.target = target;
-    }
-
-    public static Click click(String target) {
-        return new Click(target);
-    }
-
-    public static Agree agree(String target) {
-        return new Agree(target);
     }
 
     @Override

@@ -44,15 +44,15 @@ public abstract class AbstractPage implements Page {
     }
 
     @FunctionalInterface
-    protected static interface AssertionMaker {
-        public void make(Assertion assertion);
+    protected static interface AssertionMaker<T extends Assertion> {
+        public void make(T assertion);
     }
 
     @Override
     public final Page makeAssertion(Assertion assertion) {
         Objects.requireNonNull(assertion, "assertion must not be null");
 
-        AssertionMaker asserter = assertionMakers.get(assertion);
+        AssertionMaker<Assertion> asserter = assertionMakers.get(assertion);
 
         if (asserter == null) {
             throw new UnsupportedOperationException(assertion + "is not supported by Page " + this);
@@ -63,18 +63,18 @@ public abstract class AbstractPage implements Page {
         return this;
     }
 
-    private final Map<Assertion, AssertionMaker> assertionMakers = new HashMap<>();
+    private final Map<Assertion, AssertionMaker<Assertion>> assertionMakers = new HashMap<>();
 
-    protected final void addSupportedAssertions(Assertion assertion, AssertionMaker asserter) {
+    protected final <T extends Assertion> void addSupportedAssertions(T assertion, AssertionMaker<T> asserter) {
         Objects.requireNonNull(assertion, "assertion must not be null");
         Objects.requireNonNull(asserter, "assertion maker must not be null");
 
-        assertionMakers.put(assertion, asserter);
+        assertionMakers.put(assertion, (AssertionMaker<Assertion>) asserter);
     }
 
     @Override
-    public Page assertPresented() {
-        return makeAssertion(PagePresentedAssertion.INSTANCE);
+    public void assertPresented() {
+        makeAssertion(PagePresentedAssertion.INSTANCE);
     }
 
 }

@@ -1,6 +1,6 @@
 package org.devqa.web.page.assertion;
 
-public class PagePresentedAssertion extends Assertion {
+public class PagePresentedAssertion implements Assertion {
     public final static PagePresentedAssertion INSTANCE = new PagePresentedAssertion();
 
     private PagePresentedAssertion() {}

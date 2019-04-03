@@ -70,7 +70,6 @@ public interface Page {
      *
      * @return this page itself to chain the call
      */
-    Page assertPresented();
+    void assertPresented();
 
-    String getName();
 }

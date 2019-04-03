@@ -7,27 +7,36 @@ import java.util.Objects;
 
 import org.devqa.web.page.action.Action;
 
-public final class CompositePage extends AbstractPage {
-    private final String pageName;
+public class CompositePage extends AbstractPage {
+    private final String name;
+    private final Runnable presentionAsserter;
 
-    private CompositePage(String pageName,
+    protected CompositePage(String name, Runnable presentionAsserter,
             Map<Action, ActionPerformer<Action>> actionPerformers) {
         super();
-        this.pageName = pageName;
+        this.name = name;
+        this.presentionAsserter = presentionAsserter;
         actionPerformers.forEach((a, p) -> addSupportedAction(a, p));
     }
 
     @Override
+    public void assertPresented() {
+        presentionAsserter.run();
+    }
+
+    @Override
     public String toString() {
-        return "CompositePage [pageName=" + pageName + ", supported actions="
+        return "CompositePage [name=" + name + ", supported actions="
                 + getSupportedActions() + "]";
     }
 
     public static class Builder {
-        private final String pageName;
+        private final String name;
+        private Runnable presentionAsserter = undefined("presention asserter");
 
-        public Builder(String pageName) {
-            this.pageName = pageName;
+
+        public Builder(String name) {
+            this.name = name;
         }
 
         public <T extends Action> Builder action(T action, ActionPerformer<T> actionPerformer) {
@@ -41,17 +50,25 @@ public final class CompositePage extends AbstractPage {
         private final Map<Action, ActionPerformer<Action>> actionPerformers = new HashMap<>();
 
         public Page build() {
-            return new CompositePage(pageName, actionPerformers);
+            return new CompositePage(name, presentionAsserter, actionPerformers);
         }
 
-        public static Builder page(String pageName) {
-            return new Builder(pageName);
+        public static Builder page(String name) {
+            return new Builder(name);
         }
-    }
 
-    @Override
-    public String getName() {
-        return pageName;
+        private Runnable undefined(String operation) {
+            return () -> {
+                String msg = "Operation: " + operation + " for Page: " + name;
+                throw new UnsupportedOperationException(msg);
+            };
+
+        }
+
+        public Builder presentionAsserter(Runnable presentionAsserter) {
+            this.presentionAsserter = presentionAsserter;
+            return this;
+        }
     }
 
 }

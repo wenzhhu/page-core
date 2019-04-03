@@ -1,4 +1,4 @@
-package org.devqa.web.page.action;
+package org.devqa.web.page.action.singletarget;
 
 public class Click extends SingleTargetAction {
     public Click(String target) {

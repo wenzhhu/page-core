@@ -4,13 +4,12 @@ import static org.junit.Assert.*;
 
 import org.devqa.web.page.AbstractPage.ActionPerformer;
 import org.devqa.web.page.action.Action;
-import org.devqa.web.page.action.Click;
 import org.devqa.web.page.action.LogoutAction;
+import org.devqa.web.page.action.singletarget.Click;
 import org.junit.Test;
 import static org.mockito.Mockito.*;
-import static org.devqa.web.page.action.SingleTargetAction.*;
-
-import static org.devqa.web.page.action.ActionRequestFactory.*;
+import static org.devqa.web.page.action.ActionFactory.*;
+import static org.devqa.web.page.action.singletarget.SingleTargetAction.*;
 
 public class CompositePageTest {
     private final CompositePage.Builder PAGE_BUILDER = new CompositePage.Builder("test");
