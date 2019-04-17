@@ -67,8 +67,6 @@ public interface Page {
      * <p>
      * Usually, a page tries to find some unique web elements to the page. If found, then the page is
      * being presented. Not otherwise.
-     *
-     * @return this page itself to chain the call
      */
     void assertPresented();
 
